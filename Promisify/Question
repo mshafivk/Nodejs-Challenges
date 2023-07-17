@@ -1,0 +1,4 @@
+NodeJS: Implement a function  promisify(callbackFunction) so that it takes a callback based function and returns a promise-based one. 
+The promise based function might be called with one or more arguments. If so, pass those along to the callbackFunction and add an argument at the end for the callback. In other words, the promise based function will always be called with one argument less than the callback-based function can take. 
+Promise based function must be asynchronous.
+All callback functions will always return one argument, which should be returned from the promise based function.
