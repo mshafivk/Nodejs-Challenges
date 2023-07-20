@@ -1,0 +1,36 @@
+const { Readable } = require("stream");
+const fs = require("fs");
+
+function filterStream(inputStream, regexp) {
+  const filteredStream = new Readable({ encoding: "utf-8" });
+
+  filteredStream._read = () => {};
+
+  inputStream.on("data", (chunk) => {
+    const lines = chunk.split("\n");
+    for (const line of lines) {
+      if (regexp.test(line)) {
+        filteredStream.push(line + "\n");
+      }
+    }
+  });
+
+  inputStream.on("end", () => {
+    filteredStream.push(null); // Mark the end of the filtered stream
+  });
+
+  return filteredStream;
+}
+
+const inputStream = fs.createReadStream("input.txt", "utf-8");
+const regexp = /aaa/i;
+
+const filteredStream = filterStream(inputStream, regexp);
+
+filteredStream.on("data", (chunk) => {
+  console.log(chunk);
+});
+
+filteredStream.on("end", () => {
+  console.log("Filtered stream ended");
+});
