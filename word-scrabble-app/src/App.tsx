@@ -1,10 +1,19 @@
-import React, { useState } from "react";
-import { Letter } from "./types";
+import React, { useEffect, useRef, useState } from "react";
+import { Letter, TopScore } from "./types";
 import "./App.css";
 
 const App = () => {
   const [tiles, setTiles] = useState(Array(10).fill(""));
   const [totalScore, setTotalScore] = useState(0);
+  const [topScores, setTopScores] = useState<Array<TopScore> | []>([]);
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  useEffect(() => {
+    const nextEmptyInput = inputRefs.current.find((ref) => ref && !ref.value);
+    if (nextEmptyInput) {
+      nextEmptyInput.focus();
+    }
+  }, [tiles]);
 
   // The function to calculate the score for each letter based on the rules
   const calculateScore = (letter: Letter): number => {
@@ -67,7 +76,21 @@ const App = () => {
 
   // Event handler for retrieving the Top Scores from the backend
   const handleTopScore = () => {
-    // api to get top scores
+    // api to get top scores -  update logic to set State based on api response
+    setTopScores([
+      {
+        word: "Test 1",
+        score: 12,
+      },
+      {
+        word: "Test 2",
+        score: 19,
+      },
+      {
+        word: "Test 3",
+        score: 10,
+      },
+    ]);
   };
 
   return (
@@ -79,6 +102,7 @@ const App = () => {
             type="text"
             maxLength={1}
             value={letter}
+            ref={(input) => (inputRefs.current[index] = input)}
             onChange={(e) => handleTileChange(index, e.target.value)}
           />
         ))}
@@ -88,8 +112,28 @@ const App = () => {
       <div className="menu-container">
         <button onClick={handleResetTiles}>Reset Tiles</button>
         <button onClick={handleSaveScore}>Save Score</button>
-        <button onClick={handleTopScore}>Save Score</button>
+        <button onClick={handleTopScore}>VIew Top Scores</button>
       </div>
+      {topScores.length > 0 && (
+        <div className="top-scores">
+          <div className="flex flex-row">
+            <div className="flex-1 bold align-center border-1">World</div>
+            <div className="flex-1 bold align-center border-1 border-left-width-0">
+              Score
+            </div>
+          </div>
+          {topScores.map(({ word, score }) => (
+            <div className="flex flex-row">
+              <div className="flex-1 bold align-center border-1 border-top-width-0">
+                {word}
+              </div>
+              <div className="flex-1 bold align-center border-1 border-top-width-0 border-left-width-0">
+                {score}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

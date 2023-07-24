@@ -36,3 +36,44 @@
   border: 1px solid;
   cursor: pointer;
 }
+.top-scores {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.border-1 {
+  border: 1px solid;
+}
+
+.border-left-width-0 {
+  border-left-width: 0;
+}
+
+.border-top-width-0 {
+  border-top-width: 0;
+}
